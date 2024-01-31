@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
-import { API } from "aws-amplify";
+// import { API } from "aws-amplify";
+import { generateClient } from 'aws-amplify/api';
 import {
   Button,
   Flex,
@@ -17,6 +18,8 @@ import {
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
 
+const client = generateClient();
+
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
 
@@ -25,7 +28,7 @@ const App = ({ signOut }) => {
   }, []);
 
   async function fetchNotes() {
-    const apiData = await API.graphql({ query: listNotes });
+    const apiData = await client.graphql({ query: listNotes });
     const notesFromAPI = apiData.data.listNotes.items;
     setNotes(notesFromAPI);
   }
@@ -37,7 +40,7 @@ const App = ({ signOut }) => {
       name: form.get("name"),
       description: form.get("description"),
     };
-    await API.graphql({
+    await client.graphql({
       query: createNoteMutation,
       variables: { input: data },
     });
@@ -48,7 +51,7 @@ const App = ({ signOut }) => {
   async function deleteNote({ id }) {
     const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
-    await API.graphql({
+    await client.graphql({
       query: deleteNoteMutation,
       variables: { input: { id } },
     });

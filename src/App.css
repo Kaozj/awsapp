@@ -28,6 +28,49 @@
   color: #61dafb;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; Set the height to 100% of the viewport height */
+}
+
+.spaced {
+  margin-top: 40px; /* Adjust the margin-top to add vertical space */
+}
+
+.table-container {
+  width: 50%; /* Set a fixed width for the table container, adjust as needed */
+  margin: auto; /* Center the table container on the screen */
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; /* Add this property to remove spaces between cells */
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+td {
+  /* width: 150px; */
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #000
+}
+
+th {
+  border: 1px solid #000
+}
+
+th:nth-child(2), td:nth-child(2) {
+  width: 600px; /* Set a different width for the second column */
+}
+
+th:nth-child(3), td:nth-child(3) {
+  width: 300px; /* Set a different width for the second column */
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

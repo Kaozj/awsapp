@@ -13,6 +13,7 @@ import {
   withAuthenticator,
 } from "@aws-amplify/ui-react";
 import { listNotes } from "./graphql/queries";
+import { uploadData, getUrl, remove } from 'aws-amplify/storage';
 import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
@@ -97,7 +98,7 @@ const App = ({ signOut }) => {
     await Promise.all(
       notesFromAPI.map(async (note) => {
         if (note.image) {
-          const url = await Storage.get(note.name);
+          const url = await getUrl({key: note.id});
           note.image = url;
         }
         return note;
@@ -113,21 +114,21 @@ const App = ({ signOut }) => {
     const data = {
       name: form.get("name"),
       description: form.get("description"),
-      image: image.name,
+      image: image ? image.name : null,
     };
-    if (!!data.image) await Storage.put(data.name, image);
-    await client.graphql({
+    const result=await client.graphql({
       query: createNoteMutation,
       variables: { input: data },
     });
+    if (!!data.image) await uploadData({key:result.data.createNote.id, data:image});
     fetchNotes();
     event.target.reset();
-  }
+  } 
   
   async function deleteNote({ id, name }) {
     const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
-    await Storage.remove(name);
+    await remove({key:id});
     await client.graphql({
       query: deleteNoteMutation,
       variables: { input: { id } },

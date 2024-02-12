@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
-// import { API,Storage } from "aws-amplify";
 import { generateClient } from 'aws-amplify/api';
-import { uploadData, getUrl, remove } from 'aws-amplify/storage';
 import {
   Button,
   Flex,
@@ -15,38 +13,12 @@ import {
   withAuthenticator,
 } from "@aws-amplify/ui-react";
 import { listNotes } from "./graphql/queries";
-// import AlphaV from "./AlphaV";
 import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
 
 const client = generateClient();
-
-const Joke = () => {
-  const [joke, setJoke] = useState(null);
-  useEffect(() => {
-    fetch("https://jokes-by-api-ninjas.p.rapidapi.com/v1/jokes", {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": "fb4f76d242mshf600437f2e9d246p14393bjsn03a67b677806",
-        "X-RapidAPI-Host": "jokes-by-api-ninjas.p.rapidapi.com",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setJoke(data[0].joke);
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-  return (
-    <div>
-      <h2>Joke of the day:</h2>
-      {joke && <p>{joke}</p>}
-    </div>
-  );
-}
 
 const options = {
   method: 'GET',
@@ -58,6 +30,7 @@ const options = {
       'Accept': "application/json"
   }
 };
+
 
 const JsonTable = ({ jsonObject }) => {
   if (!jsonObject || typeof jsonObject !== 'object') {
@@ -93,33 +66,11 @@ const JsonTable = ({ jsonObject }) => {
   );
 };
 
-const LiveDateTime = () => {
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
-
-  useEffect(() => {
-    // Update the currentDateTime every second
-    const intervalId = setInterval(() => {
-      setCurrentDateTime(new Date());
-    }, 1000);
-
-    // Clear the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, []); // Empty dependency array to run the effect once on mount
-
-  const formattedDateTime = currentDateTime.toLocaleString();
-
-  return (
-    <div>
-      <p>{formattedDateTime}</p>
-    </div>
-  );
-};
-
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
-  const [quote, setQuote] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
- 
+  const [quote, setQuote] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     fetchNotes();
   }, []);
@@ -146,8 +97,8 @@ const App = ({ signOut }) => {
     await Promise.all(
       notesFromAPI.map(async (note) => {
         if (note.image) {
-          const url = await getUrl({ key: note.name });
-          note.image = url.url;
+          const url = await Storage.get(note.name);
+          note.image = url;
         }
         return note;
       })
@@ -164,7 +115,7 @@ const App = ({ signOut }) => {
       description: form.get("description"),
       image: image.name,
     };
-    if (!!data.image) await uploadData({ key: data.name, data: image });
+    if (!!data.image) await Storage.put(data.name, image);
     await client.graphql({
       query: createNoteMutation,
       variables: { input: data },
@@ -176,28 +127,21 @@ const App = ({ signOut }) => {
   async function deleteNote({ id, name }) {
     const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
-    await remove({ key: name });
+    await Storage.remove(name);
     await client.graphql({
       query: deleteNoteMutation,
       variables: { input: { id } },
     });
   }
 
-  const innerViewStyle = {
-    border: '1px solid #000', // Add a 1px solid black border
-    padding: '15px', // Add some padding for better visibility
-
-  };
-
   return (
     <View className="App">
       <Heading level={1}>My Notes App</Heading>
-      <Joke />
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           <TextField
             name="name"
-            placeholder="Note Name222"
+            placeholder="Note Name"
             label="Note Name"
             labelHidden
             variation="quiet"
@@ -205,17 +149,11 @@ const App = ({ signOut }) => {
           />
           <TextField
             name="description"
-            placeholder="Note Description"
+            placeholder="Note Description22"
             label="Note Description"
             labelHidden
             variation="quiet"
             required
-          />
-          <View
-            name="image"
-            as="input"
-            type="file"
-            style={{ alignSelf: "center" }}
           />
           <Button type="submit" variation="primary">
             Create Note
@@ -223,77 +161,42 @@ const App = ({ signOut }) => {
         </Flex>
       </View>
       <Heading level={2}>Current Notes</Heading>
-
-        <View style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-
-          <View margin="3rem 0" style={innerViewStyle}>
-            {notes.map((note) => (
-              <Flex
-                key={note.id || note.name}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text as="strong" fontWeight={700}>
-                  {note.name}
-                </Text>
-                <Text as="span">{note.description}</Text>
-                {note.image && (
-                  <Image
-                    src={note.image}
-                    alt={`visual aid for ${notes.name}`}
-                    style={{ width: 400 }}
-                  />
-                )}
-                <Button variation="link" onClick={() => deleteNote(note)}>
-                  Delete note
-                </Button>
-              </Flex>
-            ))}
-          </View>
-                
-          <View margin="3rem 0" style={innerViewStyle}>
-            {notes.map((note) => (
-              <Flex
-                key={note.id || note.name}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text as="strong" fontWeight={700}>
-                  {note.name}
-                </Text>
-                <Text as="span">{note.description}</Text>
-                {note.image && (
-                  <Image
-                    src={note.image}
-                    alt={`visual aid for ${notes.name}`}
-                    style={{ width: 400 }}
-                  />
-                )}
-                <Button variation="link" onClick={() => deleteNote(note)}>
-                  Delete note
-                </Button>
-              </Flex>
-            ))}
-          </View>
-          
-        </View>
-        <LiveDateTime />
-        
-      <Button onClick={signOut}>Sign Out</Button><br></br>
+      <View margin="3rem 0">
+      {notes.map((note) => (
+        <Flex
+          key={note.id || note.name}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Text as="strong" fontWeight={700}>
+            {note.name}
+          </Text>
+          <Text as="span">{note.description}</Text>
+          {note.image && (
+            <Image
+              src={note.image}
+              alt={`visual aid for ${notes.name}`}
+              style={{ width: 400 }}
+            />
+          )}
+          <Button variation="link" onClick={() => deleteNote(note)}>
+            Delete note
+          </Button>
+        </Flex>
+      ))}
+      </View>
+      <Button onClick={signOut}>Sign Out</Button>
+       
       <div>
         <h1>JSON Table</h1>
         <Button onClick={() => getQuote()}>Get Quote
         </Button>
         <JsonTable jsonObject={quote} />
       </div>
+
     </View>
-    
-    
   );
 };
 
 export default withAuthenticator(App);
-
-

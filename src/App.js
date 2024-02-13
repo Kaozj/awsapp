@@ -195,8 +195,8 @@ const App = ({ signOut }) => {
 
   return (
     <View className="App">
-      <Heading level={1}>My Notes App</Heading>
-      <View as="form" margin="3rem 0" onSubmit={createNote}>
+      <Heading level={1} className="unscrollable-container">My Notes App</Heading>
+      <View as="form" margin="3rem 0" onSubmit={createNote} className="unscrollable-container">
         <Flex direction="row" justifyContent="center">
           <TextField
             name="name"
@@ -219,8 +219,8 @@ const App = ({ signOut }) => {
           </Button>
         </Flex>
       </View>
-      <Heading level={2}>Current Notes</Heading>
-      <View margin="3rem 0">
+      <Heading level={2} className="unscrollable-container">Current Notes</Heading>
+      <View margin="3rem 0" className="unscrollable-container">
       {notes.map((note) => (
         <Flex
           key={note.id || note.name}

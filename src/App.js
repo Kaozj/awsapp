@@ -19,6 +19,7 @@ import {
   deleteNote as deleteNoteMutation,
   createQuote as createQuoteMutation
 } from "./graphql/mutations";
+import Sorter from "./sorters";
 
 const client = generateClient();
 
@@ -258,6 +259,7 @@ const App = ({ signOut }) => {
       </View>
       <div style={parentContainerStyle}>
       <Flex direction="column" width="200px" alignItems = "center">
+      <Sorter/>
       <Button onClick={signOut}>Sign Out</Button>
       <Button onClick={createQuote}>Get New Quote</Button>
       </Flex>

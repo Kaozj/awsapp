@@ -19,7 +19,6 @@ import {
   deleteNote as deleteNoteMutation,
   createQuote as createQuoteMutation
 } from "./graphql/mutations";
-import Sorter from "./sorters";
 
 const client = generateClient();
 

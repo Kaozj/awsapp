@@ -12,11 +12,12 @@ import {
   View,
   withAuthenticator,
 } from "@aws-amplify/ui-react";
-import { listNotes } from "./graphql/queries";
+import { listNotes, listQuotes } from "./graphql/queries";
 import { uploadData, getUrl, remove } from 'aws-amplify/storage';
 import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
+  createQuote as createQuoteMutation
 } from "./graphql/mutations";
 
 const client = generateClient();
@@ -32,6 +33,12 @@ const options = {
   }
 };
 
+const parentContainerStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "15vh", // Adjust height as needed
+};
 
 const JsonTable = ({ jsonObject }) => {
   if (!jsonObject || typeof jsonObject !== 'object') {
@@ -70,6 +77,7 @@ const JsonTable = ({ jsonObject }) => {
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
   const [quote, setQuote] = useState([]);
+  const [quotes, setQuotes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -107,6 +115,12 @@ const App = ({ signOut }) => {
     setNotes(notesFromAPI);
   }
 
+  async function fetchQuotes() {
+    const apiData = await client.graphql({ query: listQuotes });
+    const quotesFromAPI = apiData.data.listQuotes.items;
+    setQuotes(quotesFromAPI);
+  }
+
   async function createNote(event) {
     event.preventDefault();
     const form = new FormData(event.target);
@@ -124,7 +138,28 @@ const App = ({ signOut }) => {
     fetchNotes();
     event.target.reset();
   } 
-  
+
+  async function createQuote(event) {
+    event.preventDefault();
+
+    const dataPulled = await fetch('https://famous-quotes4.p.rapidapi.com/random',options)
+    .then((response) => {
+      return response.json()
+    })
+    // console.log(dataPulled[0]['author'].toString())
+    const data = {
+      author: dataPulled[0]['author'].toString(),
+      text: dataPulled[0]['text'].toString(),
+    };
+
+    await client.graphql({
+      query: createQuoteMutation,
+      variables: { input: data },
+    });
+    fetchQuotes();
+    event.target.reset();
+  } 
+
   async function deleteNote({ id, name }) {
     const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
@@ -187,8 +222,29 @@ const App = ({ signOut }) => {
         </Flex>
       ))}
       </View>
+
+      <View margin="3rem 0">
+      {quotes.map((quote) => (
+        <Flex
+          key={quote.id}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Text as="strong" fontWeight={700}>
+            {quote.author}
+          </Text>
+          <Text as="span">{quote.text}</Text>
+          <Text as="span">{quote.createdAt}</Text>
+        </Flex>
+      ))}
+      </View>
+      <div style={parentContainerStyle}>
+      <Flex direction="column" width="200px" alignItems = "center">
       <Button onClick={signOut}>Sign Out</Button>
-       
+      <Button onClick={createQuote}>Get New Quote</Button>
+      </Flex>
+      </div>
       <div>
         <h1>JSON Table</h1>
         <Button onClick={() => getQuote()}>Get Quote

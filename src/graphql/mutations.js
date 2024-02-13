@@ -50,34 +50,28 @@ export const deleteNote = /* GraphQL */ `
   }
 `;
 
-// export const createQuote = /* GraphQL */ `
-//   mutation CreateQuote(
-//     $input: CreateQuoteInput!
-//     $condition: ModelQuoteConditionInput
-//   ) {
-//     CreateQuote(input: $input, condition: $condition) {
-//       id
-//       author
-//       text
-//       createdAt
-//       updatedAt
-//       __typename
-//     }
-//   }
-// `;
+export const createQuote = /* GraphQL */ `
+  mutation CreateQuote(
+    $input: CreateQuoteInput!
+  ) {
+    CreateQuote(input: $input) {
+      id
+      author
+      text
+      __typename
+    }
+  }
+`;
 
-// export const deleteQuote = /* GraphQL */ `
-//   mutation DeleteQuote(
-//     $input: DeleteQuoteInput!
-//     $condition: ModelQuoteConditionInput
-//   ) {
-//     DeleteQuote(input: $input, condition: $condition) {
-//       id
-//       author
-//       text
-//       createdAt
-//       updatedAt
-//       __typename
-//     }
-//   }
-// `;
+export const deleteQuote = /* GraphQL */ `
+  mutation DeleteQuote(
+    $input: DeleteQuoteInput!
+  ) {
+    DeleteQuote(input: $input) {
+      id
+      author
+      text
+      __typename
+    }
+  }
+`;

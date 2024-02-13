@@ -36,36 +36,34 @@ export const listNotes = /* GraphQL */ `
   }
 `;
 
-// export const getQuote = /* GraphQL */ `
-//   query GetQuote($id: ID!) {
-//     getQuote(id: $id) {
-//       id
-//       author
-//       text
-//       createdAt
-//       updatedAt
-//       __typename
-//     }
-//   }
-// `;
+export const getQuote = /* GraphQL */ `
+  query GetQuote($id: ID!) {
+    getQuote(id: $id) {
+      id
+      author
+      text
+      createdAt
+      __typename
+    }
+  }
+`;
 
-// export const listQuotes = /* GraphQL */ `
-//   query ListQuotes(
-//     $filter: ModelQuoteFilterInput
-//     $limit: Int
-//     $nextToken: String
-//   ) {
-//     listQuotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
-//       items {
-//         id
-//         author
-//         text
-//         createdAt
-//         updatedAt
-//         __typename
-//       }
-//       nextToken
-//       __typename
-//     }
-//   }
-// `;
+export const listQuotes = /* GraphQL */ `
+  query ListQuotes(
+    $filter: ModelQuoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listQuotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        author
+        text
+        createdAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;

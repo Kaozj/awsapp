@@ -101,6 +101,7 @@ const App = ({ signOut }) => {
       })
   }
 
+
   async function fetchNotes() {
     const apiData = await client.graphql({ query: listNotes });
     const notesFromAPI = apiData.data.listNotes.items;
@@ -119,7 +120,22 @@ const App = ({ signOut }) => {
   async function fetchQuotes() {
     const apiData = await client.graphql({ query: listQuotes });
     const quotesFromAPI = apiData.data.listQuotes.items;
-    setQuotes(quotesFromAPI);
+
+    const sortedQuotes = quotesFromAPI.sort((a, b) => {
+      // Assuming 'author' is a string field in your quote object
+      const authorA = a.author.toLowerCase();
+      const authorB = b.author.toLowerCase();
+  
+      if (authorA < authorB) {
+        return -1;
+      }
+      if (authorA > authorB) {
+        return 1;
+      }
+      return 0;
+    });
+  
+    setQuotes(sortedQuotes);
   }
 
   async function createNote(event) {

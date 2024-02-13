@@ -84,7 +84,7 @@ const App = ({ signOut }) => {
   useEffect(() => {
     fetchNotes();
     fetchQuotes();
-  }, []);
+  }, [sortByAuthor]);
 
   const getQuote = () => {
     setQuote([])
@@ -103,8 +103,7 @@ const App = ({ signOut }) => {
   }
 
   const handleSortByAuthor = async () => {
-    setSortByAuthor((prevSortByAuthor) => !prevSortByAuthor);
-    fetchQuotes();
+    setSortByAuthor((!sortByAuthor));
   };
 
   const buttonStyles = {

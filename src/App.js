@@ -103,8 +103,8 @@ const App = ({ signOut }) => {
   }
 
   const handleSortByAuthor = async () => {
-    setSortByAuthor(!sortByAuthor);
-    await fetchQuotes();
+    setSortByAuthor((prevSortByAuthor) => !prevSortByAuthor);
+    fetchQuotes();
   };
 
   const buttonStyles = {
@@ -264,7 +264,7 @@ const App = ({ signOut }) => {
       </View>
       <div style={parentContainerStyle}>
       <Flex direction="column" width="200px" alignItems = "center">
-      <Button onClick={handleSortByAuthor} style={buttonStyles}>Sort by Author</Button>
+      <Button onClick={handleSortByAuthor} style={buttonStyles}>Sorted by Author</Button>
       <Button onClick={signOut}>Sign Out</Button>
       <Button onClick={createQuote}>Get New Quote</Button>
       </Flex>

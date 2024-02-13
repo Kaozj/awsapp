@@ -22,6 +22,16 @@ import {
 
 const client = generateClient();
 
+const buttonStyles = {
+  backgroundColor: sortByAuthor ? "green" : "red",
+  color: "#fff", // Text color
+  padding: "8px 16px", // Adjust padding as needed
+  cursor: "pointer",
+  border: "none",
+  borderRadius: "4px",
+  marginRight: "10px", // Adjust spacing as needed
+};
+
 const options = {
   method: 'GET',
   headers: {
@@ -254,7 +264,7 @@ const App = ({ signOut }) => {
       </View>
       <div style={parentContainerStyle}>
       <Flex direction="column" width="200px" alignItems = "center">
-      <Button onClick={handleSortByAuthor}>Sort by Author</Button>
+      <Button onClick={handleSortByAuthor} style={buttonStyles}>Sort by Author</Button>
       <Button onClick={signOut}>Sign Out</Button>
       <Button onClick={createQuote}>Get New Quote</Button>
       </Flex>

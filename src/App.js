@@ -128,7 +128,7 @@ const App = ({ signOut }) => {
 
     const sortedQuotes = sortByAuthor
     ? quotesFromAPI.sort((a, b) => a.author.localeCompare(b.author))
-    : quotesFromAPI.sort((a, b) => a.createdAt.localeCompare(b.createdAt);
+    : quotesFromAPI.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   
     setQuotes(sortedQuotes);
   }

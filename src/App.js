@@ -246,7 +246,7 @@ const App = ({ signOut }) => {
       ))}
       </View>
 
-      <View margin="3rem 0" style={{ backgroundImage: `url(${background})` }}>
+      <View margin="3rem 0" style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
       {quotes.map((quote) => (
         <Flex
           key={quote.id}

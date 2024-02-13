@@ -78,6 +78,7 @@ const JsonTable = ({ jsonObject }) => {
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
   const [quote, setQuote] = useState([]);
+  const [sortByAuthor, setSortByAuthor] = useState(false);
   const [quotes, setQuotes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -102,7 +103,10 @@ const App = ({ signOut }) => {
       })
   }
 
-
+  const handleSortByAuthor = () => {
+    setSortByAuthor(!sortByAuthor);
+  };
+  
   async function fetchNotes() {
     const apiData = await client.graphql({ query: listNotes });
     const notesFromAPI = apiData.data.listNotes.items;
@@ -122,19 +126,9 @@ const App = ({ signOut }) => {
     const apiData = await client.graphql({ query: listQuotes });
     const quotesFromAPI = apiData.data.listQuotes.items;
 
-    const sortedQuotes = quotesFromAPI.sort((a, b) => {
-      // Assuming 'author' is a string field in your quote object
-      const authorA = a.author.toLowerCase();
-      const authorB = b.author.toLowerCase();
-  
-      if (authorA < authorB) {
-        return -1;
-      }
-      if (authorA > authorB) {
-        return 1;
-      }
-      return 0;
-    });
+    const sortedQuotes = sortByAuthor
+    ? quotesFromAPI.sort((a, b) => a.author.localeCompare(b.author))
+    : [...quotesFromAPI];
   
     setQuotes(sortedQuotes);
   }
@@ -259,7 +253,7 @@ const App = ({ signOut }) => {
       </View>
       <div style={parentContainerStyle}>
       <Flex direction="column" width="200px" alignItems = "center">
-      <Sorter/>
+      <Button onClick={handleSortByAuthor}>Sort by Author</Button>
       <Button onClick={signOut}>Sign Out</Button>
       <Button onClick={createQuote}>Get New Quote</Button>
       </Flex>

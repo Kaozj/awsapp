@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
+import background from "./scenery.png";
 import { generateClient } from 'aws-amplify/api';
 import {
   Button,
@@ -245,7 +246,7 @@ const App = ({ signOut }) => {
       ))}
       </View>
 
-      <View margin="3rem 0">
+      <View margin="3rem 0" style={{ backgroundImage: `url(${background})` }}>
       {quotes.map((quote) => (
         <Flex
           key={quote.id}

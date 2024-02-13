@@ -22,16 +22,6 @@ import {
 
 const client = generateClient();
 
-const buttonStyles = {
-  backgroundColor: sortByAuthor ? "green" : "red",
-  color: "#fff", // Text color
-  padding: "8px 16px", // Adjust padding as needed
-  cursor: "pointer",
-  border: "none",
-  borderRadius: "4px",
-  marginRight: "10px", // Adjust spacing as needed
-};
-
 const options = {
   method: 'GET',
   headers: {
@@ -115,6 +105,16 @@ const App = ({ signOut }) => {
   const handleSortByAuthor = async () => {
     setSortByAuthor(!sortByAuthor);
     await fetchQuotes();
+  };
+
+  const buttonStyles = {
+    backgroundColor: sortByAuthor ? "green" : "red",
+    color: "#fff", // Text color
+    padding: "8px 16px", // Adjust padding as needed
+    cursor: "pointer",
+    border: "none",
+    borderRadius: "4px",
+    marginRight: "10px", // Adjust spacing as needed
   };
   
   async function fetchNotes() {

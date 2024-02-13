@@ -102,8 +102,9 @@ const App = ({ signOut }) => {
       })
   }
 
-  const handleSortByAuthor = () => {
+  const handleSortByAuthor = async () => {
     setSortByAuthor(!sortByAuthor);
+    await fetchQuotes();
   };
   
   async function fetchNotes() {
@@ -131,6 +132,7 @@ const App = ({ signOut }) => {
   
     setQuotes(sortedQuotes);
   }
+
 
   async function createNote(event) {
     event.preventDefault();

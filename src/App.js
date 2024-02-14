@@ -23,6 +23,15 @@ import {
 
 const client = generateClient();
 
+const SidePanel = () => {
+  return (
+    <div className="side-panel">
+      {/* Your side panel content goes here */}
+      <p>This is the side panel content.</p>
+    </div>
+  );
+};
+
 const options = {
   method: 'GET',
   headers: {
@@ -194,6 +203,9 @@ const App = ({ signOut }) => {
   }
 
   return (
+    <div className="app-container">
+    <SidePanel />
+    <div className="main-content">
     <View className="App">
       <Heading level={1} className="unscrollable-container">My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote} className="unscrollable-container">
@@ -277,6 +289,8 @@ const App = ({ signOut }) => {
       </div>
 
     </View>
+    </div>
+    </div>
   );
 };
 

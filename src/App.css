@@ -48,6 +48,27 @@
   overflow: hidden;
 }
 
+.side-panel {
+  width: 250px;
+  height: 100%;
+  background-color: #f0f0f0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0; /* Add this property to remove spaces between cells */

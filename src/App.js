@@ -26,8 +26,11 @@ const client = generateClient();
 const SidePanel = () => {
   return (
     <div className="side-panel">
-      {/* Your side panel content goes here */}
+
       <p>This is the side panel content.</p>
+      <Button onClick={signOut}>Sign Out</Button>
+      <Button onClick={createQuote}>Get New Quote</Button>
+
     </div>
   );
 };
@@ -277,8 +280,6 @@ const App = ({ signOut }) => {
       <div style={parentContainerStyle}>
       <Flex direction="column" width="200px" alignItems = "center">
       <Button onClick={handleSortByAuthor} style={buttonStyles}>Sorted by Author</Button>
-      <Button onClick={signOut}>Sign Out</Button>
-      <Button onClick={createQuote}>Get New Quote</Button>
       </Flex>
       </div>
       <div>

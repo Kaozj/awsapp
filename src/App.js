@@ -23,18 +23,6 @@ import {
 
 const client = generateClient();
 
-const SidePanel = () => {
-  return (
-    <div className="side-panel">
-
-      <p>This is the side panel content.</p>
-      <Button onClick={signOut}>Sign Out</Button>
-      <Button onClick={createQuote}>Get New Quote</Button>
-
-    </div>
-  );
-};
-
 const options = {
   method: 'GET',
   headers: {
@@ -205,6 +193,18 @@ const App = ({ signOut }) => {
     });
   }
 
+  const SidePanel = () => {
+    return (
+      <div className="side-panel">
+  
+        <p>This is the side panel content.</p>
+        <Button onClick={signOut}>Sign Out</Button>
+        <Button onClick={createQuote}>Get New Quote</Button>
+  
+      </div>
+    );
+  };
+  
   return (
     <div className="app-container">
     <SidePanel />

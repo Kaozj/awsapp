@@ -49,3 +49,48 @@ export const deleteNote = /* GraphQL */ `
     }
   }
 `;
+export const createQuote = /* GraphQL */ `
+  mutation CreateQuote(
+    $input: CreateQuoteInput!
+    $condition: ModelQuoteConditionInput
+  ) {
+    createQuote(input: $input, condition: $condition) {
+      id
+      author
+      text
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateQuote = /* GraphQL */ `
+  mutation UpdateQuote(
+    $input: UpdateQuoteInput!
+    $condition: ModelQuoteConditionInput
+  ) {
+    updateQuote(input: $input, condition: $condition) {
+      id
+      author
+      text
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteQuote = /* GraphQL */ `
+  mutation DeleteQuote(
+    $input: DeleteQuoteInput!
+    $condition: ModelQuoteConditionInput
+  ) {
+    deleteQuote(input: $input, condition: $condition) {
+      id
+      author
+      text
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;

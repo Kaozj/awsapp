@@ -40,3 +40,39 @@ export const onDeleteNote = /* GraphQL */ `
     }
   }
 `;
+export const onCreateQuote = /* GraphQL */ `
+  subscription OnCreateQuote($filter: ModelSubscriptionQuoteFilterInput) {
+    onCreateQuote(filter: $filter) {
+      id
+      author
+      text
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateQuote = /* GraphQL */ `
+  subscription OnUpdateQuote($filter: ModelSubscriptionQuoteFilterInput) {
+    onUpdateQuote(filter: $filter) {
+      id
+      author
+      text
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteQuote = /* GraphQL */ `
+  subscription OnDeleteQuote($filter: ModelSubscriptionQuoteFilterInput) {
+    onDeleteQuote(filter: $filter) {
+      id
+      author
+      text
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
